@@ -16,10 +16,10 @@ from urllib.request import Request, urlopen
 
 
 API_URL = "https://api.cafebazaar.ir/rest-v1/process/AppDownloadInfoRequest"
-DEFAULT_CLIENT_VERSION = "11.3.1"
-DEFAULT_CLIENT_VERSION_CODE = 1_100_301
+DEFAULT_CLIENT_VERSION = "28.1.0"
+DEFAULT_CLIENT_VERSION_CODE = 2_800_100
 DEFAULT_CPU = "x86,armeabi-v7a,armeabi"
-DEFAULT_SDK = 22
+DEFAULT_SDK = 27
 PACKAGE_RE = re.compile(r"^[A-Za-z0-9_]+(?:\.[A-Za-z0-9_]+)+$")
 
 

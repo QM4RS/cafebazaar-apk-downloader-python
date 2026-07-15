@@ -27,15 +27,16 @@ class DownloaderTests(unittest.TestCase):
         with self.assertRaises(BazaarError):
             parse_package("https://example.com/app/com.example.app")
 
-    def test_payload_matches_extension_defaults(self):
+    def test_payload_matches_client_defaults(self):
         payload = build_payload("com.example.app")
         properties = payload["properties"]
         request = payload["singleRequest"]["appDownloadInfoRequest"]
-        self.assertEqual(properties["clientVersion"], "11.3.1")
-        self.assertEqual(properties["androidClientInfo"]["sdkVersion"], 22)
+        self.assertEqual(properties["clientVersion"], "28.1.0")
+        self.assertEqual(properties["clientVersionCode"], 2_800_100)
+        self.assertEqual(properties["androidClientInfo"]["sdkVersion"], 27)
         self.assertEqual(request["packageName"], "com.example.app")
 
-    def test_resolve_download_builds_extension_style_url(self):
+    def test_resolve_download_builds_direct_url(self):
         body = {
             "singleReply": {
                 "appDownloadInfoReply": {

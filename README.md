@@ -1,57 +1,25 @@
-<div dir="rtl" align="right">
+# Cafe Bazaar APK Downloader
 
-# دانلودر APK کافه‌بازار با پایتون
+A small, zero-dependency Python CLI for resolving direct APK links from Cafe Bazaar and optionally downloading the files.
 
-یک ابزار خط فرمان سبک و بدون وابستگی خارجی برای دریافت لینک مستقیم APK از کافه‌بازار و دانلود اختیاری فایل.
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Dependencies: zero](https://img.shields.io/badge/dependencies-zero-brightgreen)](pyproject.toml)
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen)
+## Features
 
-</div>
+- Accepts an Android package name or a Cafe Bazaar app URL
+- Prints a direct APK URL
+- Downloads APKs with streaming I/O
+- Supports machine-readable JSON output
+- Allows custom Android SDK and CPU values
+- Uses only the Python standard library
 
----
+## Requirements
 
-## قابلیت‌ها
+- Python 3.9 or newer
 
-- دریافت نام پکیج یا لینک صفحهٔ برنامه در کافه‌بازار
-- نمایش لینک مستقیم APK
-- دانلود مستقیم و جریانی فایل، بدون نگه‌داشتن کل APK در حافظه
-- خروجی JSON برای استفاده در ابزارهای دیگر
-- امکان انتخاب Android SDK و معماری CPU
-- فقط با کتابخانهٔ استاندارد پایتون؛ بدون `requests` یا وابستگی جانبی
-
-## سازوکار
-
-افزونهٔ Chrome با شناسهٔ `imnogedkmanognaahdphhfhgehlfgdoh` این مراحل را انجام می‌دهد:
-
-```text
-package name
-    │
-    ▼
-POST /rest-v1/process/AppDownloadInfoRequest
-    │
-    ├── token
-    ├── cdnPrefix[0]
-    ├── versionCode
-    └── packageSize
-    │
-    ▼
-{cdnPrefix}/apks/{token}.apk
-```
-
-این پروژه همان قرارداد درخواست را به پایتون منتقل می‌کند. مقادیر پیش‌فرض برای سازگاری با افزونه حفظ شده‌اند:
-
-| گزینه | مقدار پیش‌فرض |
-|---|---|
-| نسخهٔ کلاینت | `11.3.1` |
-| کد نسخهٔ کلاینت | `1100301` |
-| Android SDK | `22` |
-| CPU | `x86,armeabi-v7a,armeabi` |
-
-## شروع سریع
-
-نیازمندی: Python 3.9 یا جدیدتر.
+## Quick start
 
 ```bash
 git clone https://github.com/QM4RS/cafebazaar-apk-downloader-python.git
@@ -59,33 +27,40 @@ cd cafebazaar-apk-downloader-python
 python cafebazaar_downloader.py com.ziipin.softkeyboard.iran
 ```
 
-ورودی می‌تواند لینک کامل صفحه هم باشد:
+You can also pass a full app URL:
 
 ```bash
 python cafebazaar_downloader.py \
   https://cafebazaar.ir/app/com.ziipin.softkeyboard.iran
 ```
 
-برای دانلود فایل:
+## Usage
+
+Resolve and print a direct APK link:
 
 ```bash
-python cafebazaar_downloader.py com.ziipin.softkeyboard.iran --download
+python cafebazaar_downloader.py com.example.app
 ```
 
-تعیین مسیر خروجی:
+Download the APK:
 
 ```bash
-python cafebazaar_downloader.py com.ziipin.softkeyboard.iran \
-  --output keyboard.apk
+python cafebazaar_downloader.py com.example.app --download
 ```
 
-خروجی ساختاریافته:
+Choose the output path:
 
 ```bash
-python cafebazaar_downloader.py com.ziipin.softkeyboard.iran --json
+python cafebazaar_downloader.py com.example.app --output app.apk
 ```
 
-تغییر مشخصات دستگاه:
+Print JSON metadata:
+
+```bash
+python cafebazaar_downloader.py com.example.app --json
+```
+
+Override the device profile:
 
 ```bash
 python cafebazaar_downloader.py com.example.app \
@@ -93,26 +68,35 @@ python cafebazaar_downloader.py com.example.app \
   --cpu "arm64-v8a,armeabi-v7a"
 ```
 
-نصب به‌عنوان فرمان سیستم:
+Install it as a command:
 
 ```bash
 python -m pip install .
 cafebazaar-apk com.example.app
 ```
 
-## تست
+## Default request profile
+
+| Setting | Value |
+|---|---:|
+| Client version | `28.1.0` |
+| Client version code | `2800100` |
+| Minimum Android SDK | `27` |
+| CPU | `x86,armeabi-v7a,armeabi` |
+
+## Tests
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-## محدودیت‌ها
+## Notes
 
-- برنامه‌های پولی یا برنامه‌هایی که نیازمند حساب کاربری/مالکیت هستند ممکن است لینک دانلود ندهند.
-- API کافه‌بازار عمومی و نسخه‌بندی‌شده برای توسعه‌دهندگان ثالث نیست و ممکن است در آینده تغییر کند.
-- لینک‌های تولیدشده ممکن است زمان انقضا داشته باشند.
-- مسئولیت رعایت شرایط استفادهٔ کافه‌بازار و حقوق ناشر برنامه با کاربر است.
+- Paid or account-bound apps may not return a download link.
+- Generated links may expire.
+- The Cafe Bazaar API may change without notice.
+- You are responsible for complying with Cafe Bazaar's terms and app publishers' rights.
 
-## اعتبار و مجوز
+## License
 
-منطق درخواست بر اساس افزونهٔ متن‌باز **Cafebazaar APK Downloader** نوشتهٔ Ali Borhani بررسی و به پایتون بازنویسی شده است. افزونهٔ اصلی و این بازنویسی تحت مجوز MIT هستند؛ متن کامل در [LICENSE](LICENSE) قرار دارد.
+MIT. See [LICENSE](LICENSE).
